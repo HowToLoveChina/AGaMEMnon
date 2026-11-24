@@ -37,7 +37,8 @@ def test_ref_manual_table_transcribed_exactly():
         "AG32VF303KCU6": ("AGRV2KQ32", 256 * 1024, 0, 9, 2),
         "AG32VF303CCT6": ("AGRV2KL48", 256 * 1024, 0, 10, 2),
         "AG32VF303VCT6": ("AGRV2KL100", 256 * 1024, 0, 16, 2),
-        "AG32VH303RCT6": ("AGRV2KL64", 256 * 1024, 8 * 1024 * 1024, 11, 1),
+        # The 64pinH/HyperRAM board maps VH303 to the AGRV2KL64H logic device.
+        "AG32VH303RCT6": ("AGRV2KL64H", 256 * 1024, 8 * 1024 * 1024, 11, 1),
         "AG32VF407RGT6": ("AGRV2KL64", 1024 * 1024, 0, 16, 2),
         "AG32VF407VGT6": ("AGRV2KL100", 1024 * 1024, 0, 16, 2),
         "AG32VH407VGT6": ("AGRV2KL100", 1024 * 1024, 8 * 1024 * 1024, 16, 1),
@@ -65,7 +66,8 @@ def test_only_the_qualified_dev_board_and_second_board_claim_hardware():
 def test_parts_for_package_matches_family_table():
     assert family.parts_for_package("AGRV2KL48") == ("AG32VF303CCT6",)
     assert family.parts_for_package("AGRV2KQ32") == ("AG32VF303KCU6",)
-    assert set(family.parts_for_package("AGRV2KL64")) == {"AG32VH303RCT6", "AG32VF407RGT6"}
+    assert set(family.parts_for_package("AGRV2KL64")) == {"AG32VF407RGT6"}
+    assert set(family.parts_for_package("AGRV2KL64H")) == {"AG32VH303RCT6"}
     assert set(family.parts_for_package("AGRV2KL100")) == {
         "AG32VF303VCT6", "AG32VF407VGT6", "AG32VH407VGT6",
     }

@@ -23,6 +23,7 @@ from agamemnon.engine.device import get_device
 BOND_MAPS = {
     "AGRV2KL100": "bondmap_L100.csv",
     "AGRV2KL64": "bondmap_L64.csv",
+    "AGRV2KL64H": "bondmap_L64.csv",  # HyperRAM variant shares L64 fabric IO coords
     "AGRV2KL48": "bondmap_L48.csv",
     "AGRV2KQ32": "bondmap_Q32.csv",
 }

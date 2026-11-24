@@ -242,8 +242,8 @@ agamemnon build examples/designs/comb.v --uarch \
   --pcf examples/constraints/comb_proven_L48.pcf -o comb.bin
 ```
 
-The legal device names are `AGRV2KL100`, `AGRV2KL64`, `AGRV2KL48`, and
-`AGRV2KQ32`; each has its own physical bond map. Only L48 is silicon-qualified.
+The legal device names are `AGRV2KL100`, `AGRV2KL64`, `AGRV2KL64H`, `AGRV2KL48`, and
+`AGRV2KQ32`; each has its own physical bond map. L64H is the LQFP64 HyperRAM (H) variant and reuses the AGRV2KL64 fabric IO map (its 12 `HRAM_*` pins are MCU/PSRAM-side and have no fabric IOTILE coordinate). Only L48 is silicon-qualified.
 `PIN_n` always names decimal physical package lead `n`: `PIN_10` is LQFP lead
 10, never hexadecimal `0x10`. Tile `(x,y,z)`, IOMUX, and RMUX numbers are
 separate internal identifiers. The board's numbered pin labels use these same

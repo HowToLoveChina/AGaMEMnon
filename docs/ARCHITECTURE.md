@@ -28,11 +28,12 @@ AGRV2K combines an RV32IMAFC microcontroller with an embedded FPGA containing
 bridge, and a programmable IO ring. The fabric occupies 132 logic tiles plus
 IO, BRAM, clock, and MCU-edge tiles.
 
-AGaMEMnon recognizes `AGRV2KL100`, `AGRV2KL64`, `AGRV2KL48`, and
-`AGRV2KQ32`. Generated physical bond maps are available for all four. L48 is
-exactly cross-checked and silicon-qualified; L100, L64, and Q32 are recovered
-from architecture data for inspection and future qualification. Strict image
-emission fails closed when any non-L48 package is selected.
+AGaMEMnon recognizes `AGRV2KL100`, `AGRV2KL64`, `AGRV2KL64H`, `AGRV2KL48`, and
+`AGRV2KQ32`. Generated physical bond maps are available for these packages
+(L64H reuses the AGRV2KL64 fabric IO map). L48 is exactly cross-checked and
+silicon-qualified; L100, L64, L64H, and Q32 are recovered from architecture
+data for inspection and future qualification. Strict image emission fails
+closed when any non-L48 package is selected.
 
 ## Synthesis
 

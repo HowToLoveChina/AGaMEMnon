@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """device.py -- PACKAGE / DEVICE awareness for the AGRV2K open toolchain (Project AGaMEMnon).
 
-There is one AGRV2K fabric, offered in four package variants that differ in
+There is one AGRV2K fabric, offered in five package variants that differ in
 which perimeter IO pins are bonded out (the core LUT/FF/RMUX mesh is identical
-across all four). The vendor enumerates
+across all five). AGRV2KL64H is the LQFP64 HyperRAM ("H") variant: it bonds a
+subset of the AGRV2KL64 fabric pins plus 12 dedicated HRAM_* pins that are
+MCU/PSRAM-side signals, not general fabric IO. The vendor enumerates
 the legal user pins per package in framework-agrv_sdk/etc/gen_vlog as CHIP_INFO[...], and consumes
 that set purely as a FRONT-END pin-legality gate (check_device() -> DeviceInfo.DEVICE_PINS ->
 isDevicePin()). This module mirrors that model for the open flow.
@@ -15,11 +17,12 @@ dedicated clock/oscillator function pins (CLKLOCAL_RTC, PIN_HSE, PIN_HSI, PIN_OS
 general user IO; user_pins excludes them.
 
 Front-end user-pin counts (confirmed against `gen_vlog`) are L100=79, L64=49,
-L48=34, and Q32=26. The recovered L100 physical map has 78 entries because
+L64H=57 (incl. 12 HRAM_*), L48=34, and Q32=26. The recovered L100 physical map has 78 entries because
 decoded package metadata marks `PIN_73` as `NC_73`.
 
 Package ``PIN_LIST`` records in the decoded architecture provide pin -> fabric
-I/O pad coordinates for all four packages.  L48 is independently
+I/O pad coordinates for all four base packages; L64H reuses the L64 fabric
+coordinates for its shared PIN_n fabric IO.  L48 is independently
 silicon-qualified; the other three maps are structurally recovered and remain
 explicitly unqualified until exercised on their corresponding hardware.
 """
@@ -169,6 +172,70 @@ _CHIP_INFO['AGRV2KL64'] = """
   PIN_OSC
 """
 
+_CHIP_INFO['AGRV2KL64H'] = """
+  HRAM_CK
+  HRAM_CSN
+  HRAM_DQ0
+  HRAM_DQ1
+  HRAM_DQ2
+  HRAM_DQ3
+  HRAM_DQ4
+  HRAM_DQ5
+  HRAM_DQ6
+  HRAM_DQ7
+  HRAM_RESETN
+  HRAM_RWDS
+  PIN_2
+  PIN_9
+  PIN_10
+  PIN_11
+  PIN_14
+  PIN_15
+  PIN_16
+  PIN_17
+  PIN_20
+  PIN_21
+  PIN_23
+  PIN_24
+  PIN_25
+  PIN_26
+  PIN_27
+  PIN_28
+  PIN_29
+  PIN_33
+  PIN_34
+  PIN_35
+  PIN_36
+  PIN_37
+  PIN_38
+  PIN_39
+  PIN_40
+  PIN_41
+  PIN_42
+  PIN_43
+  PIN_44
+  PIN_45
+  PIN_46
+  PIN_47
+  PIN_49
+  PIN_50
+  PIN_51
+  PIN_52
+  PIN_53
+  PIN_54
+  PIN_55
+  PIN_56
+  PIN_57
+  PIN_58
+  PIN_59
+  PIN_61
+  PIN_62
+  CLKLOCAL_RTC
+  PIN_HSE
+  PIN_HSI
+  PIN_OSC
+"""
+
 _CHIP_INFO['AGRV2KL48'] = """
   PIN_2
   PIN_10
@@ -247,9 +314,12 @@ _CHIP_INFO['AGRV2KQ32'] = """
 FUNC_PINS = frozenset(["CLKLOCAL_RTC", "PIN_HSE", "PIN_HSI", "PIN_OSC"])
 
 # Package pin counts (the number in the part name).
-_PKG_PIN_COUNT = {"AGRV2KL100": 100, "AGRV2KL64": 64, "AGRV2KL48": 48, "AGRV2KQ32": 32}
+_PKG_PIN_COUNT = {
+    "AGRV2KL100": 100, "AGRV2KL64": 64, "AGRV2KL64H": 64,
+    "AGRV2KL48": 48, "AGRV2KQ32": 32,
+}
 
-PACKAGES = ["AGRV2KL100", "AGRV2KL64", "AGRV2KL48", "AGRV2KQ32"]
+PACKAGES = ["AGRV2KL100", "AGRV2KL64", "AGRV2KL64H", "AGRV2KL48", "AGRV2KQ32"]
 
 # The dev board is the 48-pin part; the ThinkinMachine node will be the 32-pin part.
 DEFAULT_DEVICE = "AGRV2KL48"
@@ -261,12 +331,17 @@ _DATA = os.environ.get("AGAMEMNON_DATA", os.path.join(os.path.dirname(__file__),
 BOND_MAP_FILES = {
     "AGRV2KL100": "bondmap_L100.csv",
     "AGRV2KL64": "bondmap_L64.csv",
+    # L64H shares the L64 fabric IO pad coordinates. Its extra HRAM_* pins are
+    # HyperRAM/MCU-side dedicated signals with no fabric IOTILE coordinate, so
+    # they are intentionally not part of the fabric bond map.
+    "AGRV2KL64H": "bondmap_L64.csv",
     "AGRV2KL48": "bondmap_L48.csv",
     "AGRV2KQ32": "bondmap_Q32.csv",
 }
 BOND_MAP_QUALIFICATION = {
     "AGRV2KL100": "recovered-unqualified",
     "AGRV2KL64": "recovered-unqualified",
+    "AGRV2KL64H": "recovered-unqualified",
     "AGRV2KL48": "silicon-qualified",
     "AGRV2KQ32": "recovered-unqualified",
 }

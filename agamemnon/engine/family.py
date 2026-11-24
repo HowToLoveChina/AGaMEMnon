@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """family.py -- AG32 FAMILY (part-number) awareness for the AGRV2K open toolchain.
 
-``device.py`` models the four AGRV2K *package* variants (Q32/L48/L64/L100): the
-front-end pin-legality gate the vendor tools apply.  This module sits one layer
+``device.py`` models the five AGRV2K *package* variants
+(Q32/L48/L64/L64H/L100): the front-end pin-legality gate the vendor tools apply.
+L64H is the LQFP64 HyperRAM ("H") variant used by AG32VH303RCT6.  This module sits one layer
 above it and models the seven AG32 *part numbers* the vendor actually ships.
 Several parts share one package (three of the seven are LQFP-100) but differ
 in flash size, PSRAM, and ADC/DAC channel counts -- the "surround" the family
@@ -40,7 +41,7 @@ SHARED_BOOT_ROM = "Shared mask boot ROM (byte-identical dumps confirmed across t
 PACKAGE_FOR_SUFFIX = {
     "K": "AGRV2KQ32",   # QFN32
     "C": "AGRV2KL48",   # LQFP48
-    "R": "AGRV2KL64",   # LQFP64
+    "R": "AGRV2KL64",   # LQFP64 (non-HyperRAM parts, e.g. AG32VF407RGT6)
     "V": "AGRV2KL100",  # LQFP100
 }
 
@@ -93,12 +94,14 @@ PARTS = {
         board_note="No physical unit on hand; recovered package data only.",
     ),
     "AG32VH303RCT6": FamilyPart(
-        part_number="AG32VH303RCT6", package_name="LQFP64", device_id="AGRV2KL64",
+        part_number="AG32VH303RCT6", package_name="LQFP64", device_id="AGRV2KL64H",
         flash_bytes=256 * _KIB, sram_bytes=128 * _KIB, psram_bytes=8 * _MIB,
         adc_units=3, adc_channels=11, dac_units=1, dac_channels=1, comparators=2,
         max_cpu_hz=248 * _MHZ, has_qualified_board=False,
         board_note=(
-            "No physical unit on hand. Note: a different LQFP64 part "
+            "No physical unit on hand. LQFP64 HyperRAM (H) part: the vendor "
+            "front-end models it as package AGRV2KL64H (fabric IO subset of "
+            "AGRV2KL64 plus 12 dedicated HRAM_* pins). A different LQFP64 part "
             "(AG32VF407RGT6, no PSRAM) has an in-progress desk/silicon bring-up "
             "(qualification/l64_bringup_evidence.jsonl); that evidence is "
             "package-level (AGRV2KL64), not this part, and does not exercise "
@@ -185,7 +188,8 @@ def validate_family_registry():
             raise ValueError("%s: unknown AGRV2K device_id %r" % (name, part.device_id))
         expected_pkg = {
             "AGRV2KQ32": "QFN32", "AGRV2KL48": "LQFP48",
-            "AGRV2KL64": "LQFP64", "AGRV2KL100": "LQFP100",
+            "AGRV2KL64": "LQFP64", "AGRV2KL64H": "LQFP64",
+            "AGRV2KL100": "LQFP100",
         }[part.device_id]
         if part.package_name != expected_pkg:
             raise ValueError(

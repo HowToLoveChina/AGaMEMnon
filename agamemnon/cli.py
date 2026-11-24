@@ -5163,7 +5163,8 @@ def main(argv=None):
 
     new = sub.add_parser("new", help="create an AG32 project from a maintained template")
     new.add_argument("name", help="new project directory")
-    new.add_argument("--board", default="ag32vf303-l48", choices=["ag32vf303-l48"])
+    new.add_argument("--board", default="ag32vf303-l48",
+                    choices=["ag32vf303-l48", "ag32vh303-l64h"])
     # Default to the fabric-free MCU-only starter: it builds with just RISC-V
     # GCC and needs no Yosys/nextpnr. Exact fabric profiles are separately
     # hash-bound; unsupported generic MCU/direct-D routes remain fail-closed.

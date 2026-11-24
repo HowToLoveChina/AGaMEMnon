@@ -106,7 +106,7 @@ Brian's second physical board (per AG32-Docs memory); no AGaMEMnon board profile
 
 ### `AG32VH303RCT6` (LQFP64)
 
-No physical unit on hand. Note: a different LQFP64 part (AG32VF407RGT6, no PSRAM) has an in-progress desk/silicon bring-up (qualification/l64_bringup_evidence.jsonl); that evidence is package-level (AGRV2KL64), not this part, and does not exercise PSRAM.
+No physical unit on hand. LQFP64 HyperRAM (H) part: the vendor front-end models it as package AGRV2KL64H (fabric IO subset of AGRV2KL64 plus 12 dedicated HRAM_* pins). A different LQFP64 part (AG32VF407RGT6, no PSRAM) has an in-progress desk/silicon bring-up (qualification/l64_bringup_evidence.jsonl); that evidence is package-level (AGRV2KL64), not this part, and does not exercise PSRAM.
 
 | Surface | Tier | Note |
 |---|---|---|

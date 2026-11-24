@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-08-16",
+  "updated": "2026-11-24",
   "dimensions": {
     "part": [
       {
@@ -18,9 +18,9 @@
         "evidence": ["docs/KNOWN_GOOD_HARDWARE.md", "qualification/io_evidence.jsonl"]
       },
       {
-        "id": "AGRV2KL100/AGRV2KL64/AGRV2KQ32",
+        "id": "AGRV2KL100/AGRV2KL64/AGRV2KL64H/AGRV2KQ32",
         "state": "recovered physical maps; unqualified",
-        "boundary": "Package-specific PIN_n-to-IOTILE maps are generated from decoded architecture records for inspection and future qualification. Strict image emission fails closed for these packages.",
+        "boundary": "Package-specific PIN_n-to-IOTILE maps are generated from decoded architecture records for inspection and future qualification. AGRV2KL64H (LQFP64 HyperRAM variant) reuses the AGRV2KL64 fabric IO map; its 12 HRAM_* pins are MCU/PSRAM-side and have no fabric IOTILE coordinate. Strict image emission fails closed for these packages.",
         "evidence": ["docs/STATUS.md"]
       }
     ],
@@ -30,6 +30,12 @@
         "state": "reference fixture",
         "boundary": "AGM AG32VF303 LQFP-48 development board; board revision was not identified on the fixture.",
         "evidence": ["agamemnon/sdk/boards/ag32vf303-l48.toml", "docs/KNOWN_GOOD_HARDWARE.md"]
+      },
+      {
+        "id": "ag32vh303-l64h",
+        "state": "build-supported; not silicon-qualified",
+        "boundary": "AG32VH303RCT6 LQFP64 HyperRAM (64pinH) board using the AGRV2KL64H logic device. Fabric-logic synthesis/build is supported; no physical unit on hand and HyperRAM/PSRAM decode is a separate future track. No electrical or PSRAM claim is made.",
+        "evidence": ["agamemnon/sdk/boards/ag32vh303-l64h.toml", "docs/FAMILY_COVERAGE_MATRIX.md"]
       }
     ],
     "transport": [

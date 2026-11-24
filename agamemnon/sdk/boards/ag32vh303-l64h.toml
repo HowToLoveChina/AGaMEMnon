@@ -1,0 +1,39 @@
+[board]
+id = "ag32vh303-l64h"
+name = "AG32VH303 LQFP64 HyperRAM (64pinH) development board"
+device = "AGRV2KL64H"
+mcu = "AG32VH303RCT6"
+flash_size = 262144
+sram_size = 131072
+psram_size = 8388608
+
+[clocks]
+hse_mhz = 8
+supported_sysclk_mhz = [10, 25, 50, 100]
+
+[fabric_pins]
+# LQFP64-H fabric IO (the AGRV2KL64H pin set). These are ordinary fabric
+# pins; the 12 HRAM_* pins are MCU/HyperRAM-side dedicated signals and are
+# not general fabric IO exposed through this board profile.
+LED1 = "PIN_25"
+LED2 = "PIN_26"
+LED3 = "PIN_27"
+LED4 = "PIN_28"
+
+[transports.dap]
+stock = true
+recovery = true
+hardware_change = false
+
+[transports.usb]
+stock = false
+recovery = false
+hardware_change = false
+vid = 51966
+pid = 16385
+
+[transports.uart]
+stock = false
+recovery = true
+hardware_change = true
+note = "BOOT0 and UART0 require a documented harness modification on this board"
